@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'org.greenrobot.greendao'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
@@ -36,10 +37,10 @@ kapt {
     generateStubs = true
 }
 
-//greendao {
-//    targetGenDir 'src/main/java'
-//    schemaVersion 1
-//}
+greendao {
+    targetGenDir 'src/main/java'
+    schemaVersion 1
+}
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
