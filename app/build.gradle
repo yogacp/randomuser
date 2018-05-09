@@ -1,8 +1,7 @@
 apply plugin: 'com.android.application'
-
 apply plugin: 'kotlin-android'
-
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 27
@@ -13,21 +12,96 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        buildConfigField "String", "BASE_URL", "\"https://randomuser.me\""
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            debuggable false
+            useProguard true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    sourceSets {
+        main.java.srcDirs += 'build/generated/source/greendao'
+    }
 }
+
+kapt {
+    generateStubs = true
+}
+
+//greendao {
+//    targetGenDir 'src/main/java'
+//    schemaVersion 1
+//}
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
-    implementation 'com.android.support:appcompat-v7:27.0.2'
-    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.1'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+
+    // Android runner and rules support
+    androidTestImplementation(androidRunner) {
+        exclude module: 'support-annotations'
+    }
+    androidTestImplementation(androidRules) {
+        exclude module: 'support-annotations'
+    }
+
+    // Espresso support
+    androidTestImplementation(espressoDependencies.espressoCore) {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    }
+
+    //Support Dependencies
+    implementation supportDependencies.appcompatv7
+    implementation supportDependencies.design
+    implementation supportDependencies.supportv4
+    implementation supportDependencies.recycleview
+    implementation supportDependencies.cardview
+    implementation supportDependencies.contraintLayout
+    implementation supportDependencies.multidex
+
+    //RxJava 2
+    implementation rxDependencies.rxJava
+    implementation rxDependencies.rxAndroid
+
+    //Retrofit Dependencies
+    implementation retrofitDependencies.retrofit
+    implementation retrofitDependencies.converterGson
+    implementation retrofitDependencies.rxAdapterJava
+
+    //Okhttp Dependencies
+    implementation okhttpDependencies.okhttp
+    implementation okhttpDependencies.loggingInterceptor
+
+    //Dagger Dependencies
+    implementation daggerDependencies.dagger
+    implementation daggerDependencies.daggerAndroidSupport
+    kapt daggerDependencies.daggerCompiler
+    kapt daggerDependencies.daggerAndroidProcessor
+
+    //Loading Indicator View
+    implementation aviLoadingIndicator
+
+    //Debug compile
+    debugImplementation debugDB
+
+    //GreenDao
+    implementation greenDao
+
+    //Anko Layout
+    implementation ankoLayoutDependencies.ankoLayout
+
+    //Image Loader
+    implementation picasso
+
+    //Ted Permission
+    implementation tedPermission
 }
