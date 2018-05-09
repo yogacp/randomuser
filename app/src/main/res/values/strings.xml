@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">Random User Tabsquare</string>
+
+    <!-- Empty List -->
+    <string name="empty_list_title">Daftar kosong</string>
+    <string name="empty_list_content">Tidak ada daftar yang tersedia</string>
+
+    <!-- Error Connection -->
+    <string name="error_connection_title">Mohon Maaf, ada kesalahan saat menampilkan data</string>
+    <string name="error_connection_content">Mohon ulangi atau coba beberapa saat lagi.</string>
+
 </resources>

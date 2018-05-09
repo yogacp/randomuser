@@ -4,11 +4,11 @@ import app.randomuser.tabsquare.api.responses.BaseApiResponse
 import app.randomuser.tabsquare.vo.api.Result
 import io.reactivex.Flowable
 import retrofit2.http.GET
-import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface NetworkServices {
 
-    @GET("/api/?page={page}&results={resultCount}&nat=US")
-    fun getUsers(@Path("page") page :String, @Path("resultCount") resultCount :String) : Flowable<BaseApiResponse<Result>>
+    @GET("/api/?nat=US")
+    fun getUsers(@Query("page") page :String, @Query("results") results :String) : Flowable<BaseApiResponse<Result>>
 
 }

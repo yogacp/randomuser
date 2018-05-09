@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.support.v7.app.AppCompatActivity
 import app.randomuser.tabsquare.R
+import app.randomuser.tabsquare.ui.activity.home.HomeActivity
 import org.jetbrains.anko.toast
 
 class SplashScreenActivity: AppCompatActivity() {
@@ -20,12 +21,11 @@ class SplashScreenActivity: AppCompatActivity() {
 
     fun runSplashScreen(timeout: Long) {
         Handler().postDelayed({
-//            kotlin.run {
-//                val intent = Intent(this, LoginActivity::class.java)
-//                startActivity(intent)
-//                finish()
-//            }
-            toast("Success redirected")
+            kotlin.run {
+                val intent = Intent(this, HomeActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
         }, timeout)
     }
 }

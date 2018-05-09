@@ -5,6 +5,8 @@ import app.randomuser.tabsquare.RandomUserApp
 import app.randomuser.tabsquare.di.module.AppModule
 import app.randomuser.tabsquare.di.module.NetworkModule
 import app.randomuser.tabsquare.di.module.builder.ActivityBuilder
+import app.randomuser.tabsquare.model.UserDataModel
+import app.randomuser.tabsquare.model.UserDetailDataModel
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjectionModule
@@ -29,4 +31,6 @@ interface AppComponent {
     }
 
     fun inject(app: RandomUserApp)
+    fun plus(userDataModel: UserDataModel)
+    fun plus(userDetailDataModel: UserDetailDataModel)
 }

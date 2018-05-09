@@ -26,9 +26,9 @@
 
         <activity
             android:name=".ui.activity.home.HomeActivity"
-            android:theme="@style/ThemeNoActionBar"
+            android:theme="@style/AppTheme"
             android:screenOrientation="portrait"
-            android:label="Home" />
+            android:label="@string/app_name" />
 
     </application>
 

@@ -15,6 +15,7 @@
     <color name="bp_black_cc">#CC000000</color>
     <color name="bp_red">#da4336</color>
     <color name="bp_yellow">#ffda45</color>
+    <color name="bp_pink">#fb3095</color>
     <color name="bp_dashboard_bg">#BCBDB2</color>
     <color name="transparent">#00000000</color>
 </resources>
