@@ -18,10 +18,36 @@
             android:id="@+id/rvUserList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_above="@+id/llOfflineView"
             android:paddingTop="5dp"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:layout_marginBottom="5dp" />
+
+        <LinearLayout
+            android:id="@+id/llOfflineView"
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:background="@drawable/cardview_white_square"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:clickable="true"
+            android:visibility="visible">
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:contentDescription="Offline"
+                android:src="@drawable/ic_refresh"
+                android:layout_gravity="center"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="You are offline, Click to refresh"/>
+
+        </LinearLayout>
 
         <include
             android:layout_width="match_parent"

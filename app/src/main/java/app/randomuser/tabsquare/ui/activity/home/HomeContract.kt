@@ -6,13 +6,18 @@ import app.randomuser.tabsquare.vo.api.Result
 interface HomeContract {
     interface View {
         fun loadUserList()
-        fun setAdapter(products: List<Result>)
+        fun clearUserList()
+        fun setUserList(resultList: List<Result>)
+        fun setAdapter()
         fun loadImageToImageView(mImagesUrl: String, imgView: ImageView)
         fun setupUI()
+        fun setupListener()
         fun showProgressBar()
         fun hideProgressBar()
         fun showEmptyResult()
         fun hideEmptyResult()
+        fun showOfflineView()
+        fun hideOfflineView()
         fun showErrorResult(message: String)
         fun hideErrorResult()
         fun dpToPx(dp: Int): Int
@@ -21,8 +26,8 @@ interface HomeContract {
     }
 
     interface UserActionListener {
-        fun checkUserData(reqPage: String, count: String)
-        fun getUsersList(reqPage: String, count: String)
-        fun loadFromDB(reqPage: String, count: String)
+        fun checkUserData(reqPage: String, count: String, state: String)
+        fun getUsersList(reqPage: String, count: String, state: String)
+        fun loadFromDB(reqPage: String, count: String, state: String)
     }
 }

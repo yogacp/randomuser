@@ -2,10 +2,10 @@ package app.randomuser.tabsquare.ui.activity.home
 
 import android.net.Uri
 import android.os.Bundle
-import android.os.Handler
 import android.support.v4.content.ContextCompat
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.GridLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.util.TypedValue
 import android.view.View
 import android.widget.ImageView
@@ -15,6 +15,7 @@ import app.randomuser.tabsquare.helper.Helper
 import app.randomuser.tabsquare.ui.common.BaseActivity
 import app.randomuser.tabsquare.utils.AppConstants.GENDER.Companion.FEMALE
 import app.randomuser.tabsquare.utils.AppConstants.GENDER.Companion.MALE
+import app.randomuser.tabsquare.utils.InfiniteScrollListener
 import app.randomuser.tabsquare.vo.api.Result
 import com.google.gson.Gson
 import com.squareup.picasso.Picasso
@@ -31,18 +32,32 @@ class HomeActivity: BaseActivity(), HomeContract.View, SwipeRefreshLayout.OnRefr
     @Inject
     lateinit var mGson: Gson
 
+    companion object {
+        val REFRESH_DATA = "refresh_data"
+        val LOAD_MORE_DATA = "load_more_data"
+    }
+
+    var reqPage = 1
+    var resultCount = 10
+    var mUserList = ArrayList<Result>()
+
+    lateinit var mLayoutManager : RecyclerView.LayoutManager
+    lateinit var mScrollViewListener : InfiniteScrollListener
+
     override fun getLayoutId(): Int {
         return R.layout.activity_home
     }
 
     override fun onActivityReady(savedInstanceState: Bundle?) {
         mPresenter.mView = this
-        loadUserList()
         setupUI()
+        setupListener()
+        loadUserList()
     }
 
     override fun loadUserList() {
-        mPresenter.checkUserData("1","10")
+        mUserList.clear()
+        mPresenter.checkUserData(reqPage.toString(),resultCount.toString(), REFRESH_DATA)
     }
 
     override fun onBackPressed() {
@@ -51,6 +66,10 @@ class HomeActivity: BaseActivity(), HomeContract.View, SwipeRefreshLayout.OnRefr
 
     override fun setupUI() {
         homeSwipeLayout.setOnRefreshListener(this)
+        mLayoutManager = GridLayoutManager(applicationContext, 2)
+        llOfflineView.setOnClickListener {
+            mPresenter.checkUserData(reqPage.toString(),resultCount.toString(), LOAD_MORE_DATA)
+        }
     }
 
     override fun onRefresh() {
@@ -58,10 +77,36 @@ class HomeActivity: BaseActivity(), HomeContract.View, SwipeRefreshLayout.OnRefr
         loadUserList()
     }
 
-    override fun setAdapter(products: List<Result>) {
-        val mLayoutManager = GridLayoutManager(applicationContext, 2)
+    override fun clearUserList() {
+        mUserList.clear()
+    }
+
+    override fun setUserList(resultList: List<Result>) {
+        for(result in resultList) {
+            mUserList.add(result)
+        }
+    }
+
+    override fun setupListener() {
+        mScrollViewListener = object : InfiniteScrollListener(mLayoutManager) {
+            override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView) {
+                reqPage = page + 1
+                mPresenter.checkUserData(reqPage.toString(),resultCount.toString(), LOAD_MORE_DATA)
+
+                val cursize = rvUserList.adapter.itemCount
+                view.post(object : Runnable{
+                    override fun run() {
+                        rvUserList.adapter.notifyItemRangeInserted(cursize, mUserList.size - 1)
+                    }
+                })
+            }
+        }
+    }
+
+    override fun setAdapter() {
+        rvUserList.addOnScrollListener(mScrollViewListener)
         rvUserList.setUp(
-                products,
+                mUserList,
                 R.layout.item_list_user,
                 {
                     loadImageToImageView(it.picture.large,imgUser)
@@ -122,6 +167,15 @@ class HomeActivity: BaseActivity(), HomeContract.View, SwipeRefreshLayout.OnRefr
 
     override fun hideProgressBar() {
         avLoadingIndicator.visibility = View.GONE
+    }
+
+    override fun showOfflineView() {
+        toast("Cannot load more data")
+        llOfflineView.visibility = View.VISIBLE
+    }
+
+    override fun hideOfflineView() {
+        llOfflineView.visibility = View.GONE
     }
 
     override fun dpToPx(dp: Int): Int {

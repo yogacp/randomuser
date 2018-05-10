@@ -6,8 +6,8 @@ import com.google.gson.annotations.SerializedName
 
 
 data class Location(
-        @SerializedName("street") val street: String,
-        @SerializedName("city") val city: String,
-        @SerializedName("state") val state: String,
-        @SerializedName("postcode") val postcode: Int
+        @SerializedName("street") var street: String,
+        @SerializedName("city") var city: String,
+        @SerializedName("state") var state: String,
+        @SerializedName("postcode") var postcode: Int
 )

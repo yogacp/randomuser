@@ -35,6 +35,14 @@ class UserDataModel (val daoSession: DaoSession) {
         mEntityDao.insertOrReplace(usersData)
     }
 
+    fun delete(page: String) {
+        val deleteQuery = mEntityDao.queryBuilder()
+                .where(UsersDataDao.Properties.Page.eq(page))
+                .buildDelete()
+        deleteQuery.executeDeleteWithoutDetachingEntities()
+        daoSession.clear()
+    }
+
     fun deleteAllData(){
         mEntityDao.deleteAll()
     }

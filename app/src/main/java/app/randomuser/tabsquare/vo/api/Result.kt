@@ -6,16 +6,16 @@ import com.google.gson.annotations.SerializedName
 
 
 data class Result(
-        @SerializedName("gender") val gender: String,
-        @SerializedName("name") val name: Name,
-        @SerializedName("location") val location: Location,
-        @SerializedName("email") val email: String,
-        @SerializedName("login") val login: Login,
-        @SerializedName("dob") val dob: String,
-        @SerializedName("registered") val registered: String,
-        @SerializedName("phone") val phone: String,
-        @SerializedName("cell") val cell: String,
-        @SerializedName("id") val id: Id,
-        @SerializedName("picture") val picture: Picture,
-        @SerializedName("nat") val nat: String
+        @SerializedName("gender") var gender: String,
+        @SerializedName("name") var name: Name,
+        @SerializedName("location") var location: Location,
+        @SerializedName("email") var email: String,
+        @SerializedName("login") var login: Login,
+        @SerializedName("dob") var dob: String,
+        @SerializedName("registered") var registered: String,
+        @SerializedName("phone") var phone: String,
+        @SerializedName("cell") var cell: String,
+        @SerializedName("id") var id: Id,
+        @SerializedName("picture") var picture: Picture,
+        @SerializedName("nat") var nat: String
 )

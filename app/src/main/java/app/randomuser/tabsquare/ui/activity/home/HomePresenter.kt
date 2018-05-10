@@ -5,7 +5,9 @@ import app.randomuser.tabsquare.api.responses.BaseApiResponse
 import app.randomuser.tabsquare.helper.Helper
 import app.randomuser.tabsquare.model.UserDataModel
 import app.randomuser.tabsquare.repository.RandomUserRepository
+import app.randomuser.tabsquare.ui.activity.home.HomeActivity.Companion.REFRESH_DATA
 import app.randomuser.tabsquare.vo.api.Result
+import app.randomuser.tabsquare.vo.api.UserData
 import app.randomuser.tabsquare.vo.db.UsersData
 import com.google.gson.Gson
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -25,36 +27,46 @@ class HomePresenter @Inject constructor(
     lateinit var mView: HomeContract.View
     var mDisposable = CompositeDisposable()
 
-    override fun checkUserData(reqPage: String, count: String) {
+    override fun checkUserData(reqPage: String, count: String, state: String) {
         mView.showProgressBar()
         mView.hideEmptyResult()
         mView.hideErrorResult()
+        mView.hideOfflineView()
 
         if(mHelper.isNetworkConnected(mContext)) {
-            getUsersList(reqPage, count)
+            getUsersList(reqPage, count, state)
         } else {
-            loadFromDB(reqPage, count)
+            loadFromDB(reqPage, count, state)
         }
     }
 
-    override fun loadFromDB(reqPage: String, count: String) {
+    override fun loadFromDB(reqPage: String, count: String, state: String) {
         mUserDataModel.getUserData(reqPage).let {
             if (it != null) {
-                val mListResult = ArrayList<Result>()
-                for (userData in it) {
-                    mListResult.add(mGson.fromJson(userData.data, Result::class.java))
-                }
-                mView.setAdapter(mListResult)
                 mView.hideProgressBar()
+                var mListResult : List<Result>? = null
+                for (userData in it) {
+                    val resultData = mGson.fromJson(userData.data, UserData::class.java)
+                    mListResult = resultData.result
+                }
+
+                mView.setUserList(mListResult!!)
+                if(state.equals(REFRESH_DATA)) {
+                    mView.setAdapter()
+                }
             } else {
                 mView.hideProgressBar()
                 mView.hideEmptyResult()
-                mView.showErrorResult("User is offline and there is no cached data")
+                if(state.equals(REFRESH_DATA)) {
+                    mView.showErrorResult("User is offline and there is no cached data")
+                } else {
+                    mView.showOfflineView()
+                }
             }
         }
     }
 
-    override fun getUsersList(reqPage: String, count: String) {
+    override fun getUsersList(reqPage: String, count: String, state: String) {
         mDisposable.add(mRepository.getUsers(reqPage, count)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -69,8 +81,14 @@ class HomePresenter @Inject constructor(
                                 page = reqPage
                                 lastUpdated = System.currentTimeMillis()
                             }
+                            mUserDataModel.delete(reqPage)
                             mUserDataModel.saveUserData(userData)
-                            mView.setAdapter(response.result)
+                            mView.setUserList(response.result)
+
+                            if(state.equals(REFRESH_DATA)) {
+                                mView.setAdapter()
+                            }
+
                         } else {
                             mView.showEmptyResult()
                         }
@@ -83,7 +101,11 @@ class HomePresenter @Inject constructor(
                     override fun onError(t: Throwable?) {
                         mView.hideProgressBar()
                         mView.hideEmptyResult()
-                        mView.showErrorResult("Error while getting user list")
+                        if(state.equals(REFRESH_DATA)) {
+                            mView.showErrorResult("Error while getting user list")
+                        } else {
+                            mView.showOfflineView()
+                        }
                     }
 
                 }))
