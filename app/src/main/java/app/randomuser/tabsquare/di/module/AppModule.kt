@@ -6,7 +6,6 @@ import app.randomuser.tabsquare.RandomUserApp
 import app.randomuser.tabsquare.helper.Helper
 import app.randomuser.tabsquare.model.UserDataModel
 import app.randomuser.tabsquare.model.UserDetailDataModel
-import app.randomuser.tabsquare.session.DataSession
 import app.randomuser.tabsquare.utils.AppConstants
 import app.randomuser.tabsquare.utils.RxBus
 import app.randomuser.tabsquare.vo.db.DaoMaster
@@ -40,11 +39,6 @@ class AppModule {
     @Provides @Singleton
     internal fun rxBus(): RxBus {
         return RxBus()
-    }
-
-    @Provides @Singleton
-    internal fun provideDataSession(): DataSession {
-        return DataSession()
     }
 
     @Provides

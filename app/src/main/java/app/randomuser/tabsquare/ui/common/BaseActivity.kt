@@ -1,14 +1,18 @@
 package app.randomuser.tabsquare.ui.common
 
 import android.os.Bundle
+import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import app.randomuser.tabsquare.helper.Helper
 import app.randomuser.tabsquare.ui.common.navigation.ActivityNavigation
 import dagger.android.AndroidInjection
+import dagger.android.AndroidInjector
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.support.HasSupportFragmentInjector
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
-abstract class BaseActivity: AppCompatActivity() {
+abstract class BaseActivity: AppCompatActivity(), HasSupportFragmentInjector {
 
     @Inject
     lateinit var mHelper: Helper
@@ -16,7 +20,8 @@ abstract class BaseActivity: AppCompatActivity() {
     @Inject
     lateinit var mActivityNavigation: ActivityNavigation
 
-    var mDisposables = CompositeDisposable()
+    @Inject
+    lateinit var mFragmentDispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
 
     /**
      * This function replace onCreate as main function run in activity
@@ -40,4 +45,7 @@ abstract class BaseActivity: AppCompatActivity() {
         onActivityReady(savedInstanceState)
     }
 
+    override fun supportFragmentInjector(): AndroidInjector<Fragment> {
+        return mFragmentDispatchingAndroidInjector
+    }
 }

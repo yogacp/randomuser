@@ -9,4 +9,6 @@
     <string name="error_connection_title">Mohon Maaf, ada kesalahan saat menampilkan data</string>
     <string name="error_connection_content">Mohon ulangi atau coba beberapa saat lagi.</string>
 
+    <string name="close">Tutup</string>
+
 </resources>

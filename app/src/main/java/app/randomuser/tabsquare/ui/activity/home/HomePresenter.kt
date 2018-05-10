@@ -115,6 +115,7 @@ class HomePresenter @Inject constructor(
     }
 
     override fun saveUserDetailData(userHash: String, result: Result) {
+        mUserDetailDataModel.delete(userHash)
         val userDetailData = UserDetailData()
         userDetailData.apply {
             md5 = userHash

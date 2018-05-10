@@ -26,7 +26,15 @@ class UserDetailDataModel (val daoSession: DaoSession) {
         mEntityDao.insertOrReplace(userDetailData)
     }
 
-    fun delete(userDetailData: UserDetailData){
-        mEntityDao.delete(userDetailData)
+    fun delete(userHash: String) {
+        val deleteQuery = mEntityDao.queryBuilder()
+                .where(UserDetailDataDao.Properties.Md5.eq(userHash))
+                .buildDelete()
+        deleteQuery.executeDeleteWithoutDetachingEntities()
+        daoSession.clear()
+    }
+
+    fun deleteAllData(){
+        mEntityDao.deleteAll()
     }
 }

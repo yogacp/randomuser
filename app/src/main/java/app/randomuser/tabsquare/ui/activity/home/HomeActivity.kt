@@ -17,7 +17,6 @@ import app.randomuser.tabsquare.utils.AppConstants.GENDER.Companion.FEMALE
 import app.randomuser.tabsquare.utils.AppConstants.GENDER.Companion.MALE
 import app.randomuser.tabsquare.utils.InfiniteScrollListener
 import app.randomuser.tabsquare.vo.api.Result
-import com.google.gson.Gson
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.item_list_user.view.*
@@ -127,14 +126,13 @@ class HomeActivity: BaseActivity(), HomeContract.View, SwipeRefreshLayout.OnRefr
                     }
                 },
                 {
-                    toast("User ${it.login.md5} clicked")
+                    mActivityNavigation.navigateToDetailPage(it.login.md5)
                 },
                 mLayoutManager
         )
     }
 
     override fun loadImageToImageView(mImagesUrl: String, imgView: ImageView) {
-        imgView.visibility = View.VISIBLE
         Picasso.get()
                 .load(Uri.parse(mImagesUrl))
                 .placeholder(R.drawable.progressbar)

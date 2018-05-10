@@ -39,6 +39,7 @@ ext {
     besliderVersion = '1.0.1'
     tedPermissionVersion = '2.1.0'
     firestoreVersion = '15.0.0'
+    circleImageViewVersion = '2.1.0'
 
     /**
      * Library Package name
@@ -69,6 +70,7 @@ ext {
     saripaarPackage = 'com.mobsandgeeks'
     tunaikuPackage = 'com.github.tunaiku'
     tedPermissionPackage = 'gun0912.ted'
+    circleImageViewPackage = 'de.hdodenhof'
 
     /**
      * List of Android Support Dependencies
@@ -182,6 +184,7 @@ ext {
     saripaarValidation = buildDependency(saripaarPackage, 'android-saripaar', saripaarVersion)
     beslider = buildDependency(tunaikuPackage,'beslider',besliderVersion)
     tedPermission = buildDependency(tedPermissionPackage, 'tedpermission-rx2', tedPermissionVersion)
+    circleImageView = buildDependency(circleImageViewPackage, 'circleimageview', circleImageViewVersion)
 }
 
 /**
