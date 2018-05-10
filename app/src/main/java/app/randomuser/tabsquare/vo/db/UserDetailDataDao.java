@@ -13,7 +13,7 @@ import org.greenrobot.greendao.database.DatabaseStatement;
 /** 
  * DAO for table "USER_DETAIL_DATA".
 */
-public class UserDetailDataDao extends AbstractDao<UserDetailData, Void> {
+public class UserDetailDataDao extends AbstractDao<UserDetailData, Long> {
 
     public static final String TABLENAME = "USER_DETAIL_DATA";
 
@@ -22,7 +22,7 @@ public class UserDetailDataDao extends AbstractDao<UserDetailData, Void> {
      * Can be used for QueryBuilder and for referencing column names.
      */
     public static class Properties {
-        public final static Property Userid = new Property(0, Long.class, "userid", false, "USERID");
+        public final static Property Userid = new Property(0, Long.class, "userid", true, "_id");
         public final static Property Md5 = new Property(1, String.class, "md5", false, "MD5");
         public final static Property Data = new Property(2, String.class, "data", false, "DATA");
         public final static Property LastUpdated = new Property(3, Long.class, "lastUpdated", false, "LAST_UPDATED");
@@ -41,13 +41,13 @@ public class UserDetailDataDao extends AbstractDao<UserDetailData, Void> {
     public static void createTable(Database db, boolean ifNotExists) {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"USER_DETAIL_DATA\" (" + //
-                "\"USERID\" INTEGER," + // 0: userid
+                "\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: userid
                 "\"MD5\" TEXT," + // 1: md5
                 "\"DATA\" TEXT," + // 2: data
                 "\"LAST_UPDATED\" INTEGER);"); // 3: lastUpdated
         // Add Indexes
-        db.execSQL("CREATE UNIQUE INDEX " + constraint + "IDX_USER_DETAIL_DATA_USERID ON \"USER_DETAIL_DATA\"" +
-                " (\"USERID\" ASC);");
+        db.execSQL("CREATE UNIQUE INDEX " + constraint + "IDX_USER_DETAIL_DATA__id ON \"USER_DETAIL_DATA\"" +
+                " (\"_id\" ASC);");
     }
 
     /** Drops the underlying database table. */
@@ -107,8 +107,8 @@ public class UserDetailDataDao extends AbstractDao<UserDetailData, Void> {
     }
 
     @Override
-    public Void readKey(Cursor cursor, int offset) {
-        return null;
+    public Long readKey(Cursor cursor, int offset) {
+        return cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0);
     }    
 
     @Override
@@ -131,20 +131,23 @@ public class UserDetailDataDao extends AbstractDao<UserDetailData, Void> {
      }
     
     @Override
-    protected final Void updateKeyAfterInsert(UserDetailData entity, long rowId) {
-        // Unsupported or missing PK type
-        return null;
+    protected final Long updateKeyAfterInsert(UserDetailData entity, long rowId) {
+        entity.setUserid(rowId);
+        return rowId;
     }
     
     @Override
-    public Void getKey(UserDetailData entity) {
-        return null;
+    public Long getKey(UserDetailData entity) {
+        if(entity != null) {
+            return entity.getUserid();
+        } else {
+            return null;
+        }
     }
 
     @Override
     public boolean hasKey(UserDetailData entity) {
-        // TODO
-        return false;
+        return entity.getUserid() != null;
     }
 
     @Override

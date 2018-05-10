@@ -4,7 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
-
+import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Index;
 import org.greenrobot.greendao.annotation.Generated;
@@ -13,6 +13,7 @@ import org.greenrobot.greendao.annotation.Generated;
 public class UserDetailData implements Parcelable {
 
     @Index(unique = true)
+    @Id(autoincrement = true)
     @SerializedName("userid")
     public Long userid;
     @SerializedName("md5")

@@ -29,9 +29,6 @@ class HomeActivity: BaseActivity(), HomeContract.View, SwipeRefreshLayout.OnRefr
     @Inject
     lateinit var mPresenter: HomePresenter
 
-    @Inject
-    lateinit var mGson: Gson
-
     companion object {
         val REFRESH_DATA = "refresh_data"
         val LOAD_MORE_DATA = "load_more_data"
@@ -84,6 +81,7 @@ class HomeActivity: BaseActivity(), HomeContract.View, SwipeRefreshLayout.OnRefr
     override fun setUserList(resultList: List<Result>) {
         for(result in resultList) {
             mUserList.add(result)
+            mPresenter.saveUserDetailData(result.login.md5, result)
         }
     }
 
@@ -129,7 +127,7 @@ class HomeActivity: BaseActivity(), HomeContract.View, SwipeRefreshLayout.OnRefr
                     }
                 },
                 {
-                    toast("User ${it.name.first.capitalize()} ${it.name.last.capitalize()} clicked")
+                    toast("User ${it.login.md5} clicked")
                 },
                 mLayoutManager
         )

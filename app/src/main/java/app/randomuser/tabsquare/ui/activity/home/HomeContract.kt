@@ -29,5 +29,6 @@ interface HomeContract {
         fun checkUserData(reqPage: String, count: String, state: String)
         fun getUsersList(reqPage: String, count: String, state: String)
         fun loadFromDB(reqPage: String, count: String, state: String)
+        fun saveUserDetailData(userHash: String, result: Result)
     }
 }

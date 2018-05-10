@@ -4,10 +4,12 @@ import android.content.Context
 import app.randomuser.tabsquare.api.responses.BaseApiResponse
 import app.randomuser.tabsquare.helper.Helper
 import app.randomuser.tabsquare.model.UserDataModel
+import app.randomuser.tabsquare.model.UserDetailDataModel
 import app.randomuser.tabsquare.repository.RandomUserRepository
 import app.randomuser.tabsquare.ui.activity.home.HomeActivity.Companion.REFRESH_DATA
 import app.randomuser.tabsquare.vo.api.Result
 import app.randomuser.tabsquare.vo.api.UserData
+import app.randomuser.tabsquare.vo.db.UserDetailData
 import app.randomuser.tabsquare.vo.db.UsersData
 import com.google.gson.Gson
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -21,6 +23,7 @@ class HomePresenter @Inject constructor(
         val mContext : Context,
         val mGson : Gson,
         val mUserDataModel: UserDataModel,
+        val mUserDetailDataModel: UserDetailDataModel,
         val mRepository: RandomUserRepository
 ): HomeContract.UserActionListener {
 
@@ -84,7 +87,6 @@ class HomePresenter @Inject constructor(
                             mUserDataModel.delete(reqPage)
                             mUserDataModel.saveUserData(userData)
                             mView.setUserList(response.result)
-
                             if(state.equals(REFRESH_DATA)) {
                                 mView.setAdapter()
                             }
@@ -110,5 +112,15 @@ class HomePresenter @Inject constructor(
 
                 }))
 
+    }
+
+    override fun saveUserDetailData(userHash: String, result: Result) {
+        val userDetailData = UserDetailData()
+        userDetailData.apply {
+            md5 = userHash
+            data = mGson.toJson(result)
+            lastUpdated = System.currentTimeMillis()
+        }
+        mUserDetailDataModel.saveUserData(userDetailData)
     }
 }
