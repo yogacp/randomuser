@@ -18,10 +18,26 @@ public class UserDetailData implements Parcelable {
     public Long userid;
     @SerializedName("md5")
     public String md5;
+    @SerializedName("page")
+    public String page;
     @SerializedName("data")
     public String data;
     @SerializedName("lastUpdated")
     public Long lastUpdated;
+
+    @Generated(hash = 1819435531)
+    public UserDetailData(Long userid, String md5, String page, String data,
+            Long lastUpdated) {
+        this.userid = userid;
+        this.md5 = md5;
+        this.page = page;
+        this.data = data;
+        this.lastUpdated = lastUpdated;
+    }
+
+    @Generated(hash = 1103649994)
+    public UserDetailData() {
+    }
 
     protected UserDetailData(Parcel in) {
         if (in.readByte() == 0) {
@@ -30,24 +46,13 @@ public class UserDetailData implements Parcelable {
             userid = in.readLong();
         }
         md5 = in.readString();
+        page = in.readString();
         data = in.readString();
         if (in.readByte() == 0) {
             lastUpdated = null;
         } else {
             lastUpdated = in.readLong();
         }
-    }
-
-    @Generated(hash = 1675852683)
-    public UserDetailData(Long userid, String md5, String data, Long lastUpdated) {
-        this.userid = userid;
-        this.md5 = md5;
-        this.data = data;
-        this.lastUpdated = lastUpdated;
-    }
-
-    @Generated(hash = 1103649994)
-    public UserDetailData() {
     }
 
     @Override
@@ -59,6 +64,7 @@ public class UserDetailData implements Parcelable {
             dest.writeLong(userid);
         }
         dest.writeString(md5);
+        dest.writeString(page);
         dest.writeString(data);
         if (lastUpdated == null) {
             dest.writeByte((byte) 0);
@@ -87,6 +93,14 @@ public class UserDetailData implements Parcelable {
 
     public void setMd5(String md5) {
         this.md5 = md5;
+    }
+
+    public String getPage() {
+        return this.page;
+    }
+
+    public void setPage(String page) {
+        this.page = page;
     }
 
     public String getData() {

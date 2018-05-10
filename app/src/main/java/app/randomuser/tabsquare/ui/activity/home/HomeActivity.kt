@@ -47,8 +47,8 @@ class HomeActivity: BaseActivity(), HomeContract.View, SwipeRefreshLayout.OnRefr
     override fun onActivityReady(savedInstanceState: Bundle?) {
         mPresenter.mView = this
         setupUI()
-        setupListener()
         loadUserList()
+        setupListener()
     }
 
     override fun loadUserList() {
@@ -77,10 +77,10 @@ class HomeActivity: BaseActivity(), HomeContract.View, SwipeRefreshLayout.OnRefr
         mUserList.clear()
     }
 
-    override fun setUserList(resultList: List<Result>) {
+    override fun setUserList(resultList: List<Result>, page: String) {
         for(result in resultList) {
             mUserList.add(result)
-            mPresenter.saveUserDetailData(result.login.md5, result)
+            mPresenter.saveUserDetailData(result.login.md5, result, page)
         }
     }
 

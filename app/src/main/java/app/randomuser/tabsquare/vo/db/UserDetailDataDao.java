@@ -24,8 +24,9 @@ public class UserDetailDataDao extends AbstractDao<UserDetailData, Long> {
     public static class Properties {
         public final static Property Userid = new Property(0, Long.class, "userid", true, "_id");
         public final static Property Md5 = new Property(1, String.class, "md5", false, "MD5");
-        public final static Property Data = new Property(2, String.class, "data", false, "DATA");
-        public final static Property LastUpdated = new Property(3, Long.class, "lastUpdated", false, "LAST_UPDATED");
+        public final static Property Page = new Property(2, String.class, "page", false, "PAGE");
+        public final static Property Data = new Property(3, String.class, "data", false, "DATA");
+        public final static Property LastUpdated = new Property(4, Long.class, "lastUpdated", false, "LAST_UPDATED");
     }
 
 
@@ -43,8 +44,9 @@ public class UserDetailDataDao extends AbstractDao<UserDetailData, Long> {
         db.execSQL("CREATE TABLE " + constraint + "\"USER_DETAIL_DATA\" (" + //
                 "\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: userid
                 "\"MD5\" TEXT," + // 1: md5
-                "\"DATA\" TEXT," + // 2: data
-                "\"LAST_UPDATED\" INTEGER);"); // 3: lastUpdated
+                "\"PAGE\" TEXT," + // 2: page
+                "\"DATA\" TEXT," + // 3: data
+                "\"LAST_UPDATED\" INTEGER);"); // 4: lastUpdated
         // Add Indexes
         db.execSQL("CREATE UNIQUE INDEX " + constraint + "IDX_USER_DETAIL_DATA__id ON \"USER_DETAIL_DATA\"" +
                 " (\"_id\" ASC);");
@@ -70,14 +72,19 @@ public class UserDetailDataDao extends AbstractDao<UserDetailData, Long> {
             stmt.bindString(2, md5);
         }
  
+        String page = entity.getPage();
+        if (page != null) {
+            stmt.bindString(3, page);
+        }
+ 
         String data = entity.getData();
         if (data != null) {
-            stmt.bindString(3, data);
+            stmt.bindString(4, data);
         }
  
         Long lastUpdated = entity.getLastUpdated();
         if (lastUpdated != null) {
-            stmt.bindLong(4, lastUpdated);
+            stmt.bindLong(5, lastUpdated);
         }
     }
 
@@ -95,14 +102,19 @@ public class UserDetailDataDao extends AbstractDao<UserDetailData, Long> {
             stmt.bindString(2, md5);
         }
  
+        String page = entity.getPage();
+        if (page != null) {
+            stmt.bindString(3, page);
+        }
+ 
         String data = entity.getData();
         if (data != null) {
-            stmt.bindString(3, data);
+            stmt.bindString(4, data);
         }
  
         Long lastUpdated = entity.getLastUpdated();
         if (lastUpdated != null) {
-            stmt.bindLong(4, lastUpdated);
+            stmt.bindLong(5, lastUpdated);
         }
     }
 
@@ -116,8 +128,9 @@ public class UserDetailDataDao extends AbstractDao<UserDetailData, Long> {
         UserDetailData entity = new UserDetailData( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // userid
             cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // md5
-            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // data
-            cursor.isNull(offset + 3) ? null : cursor.getLong(offset + 3) // lastUpdated
+            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // page
+            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // data
+            cursor.isNull(offset + 4) ? null : cursor.getLong(offset + 4) // lastUpdated
         );
         return entity;
     }
@@ -126,8 +139,9 @@ public class UserDetailDataDao extends AbstractDao<UserDetailData, Long> {
     public void readEntity(Cursor cursor, UserDetailData entity, int offset) {
         entity.setUserid(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setMd5(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
-        entity.setData(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
-        entity.setLastUpdated(cursor.isNull(offset + 3) ? null : cursor.getLong(offset + 3));
+        entity.setPage(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
+        entity.setData(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setLastUpdated(cursor.isNull(offset + 4) ? null : cursor.getLong(offset + 4));
      }
     
     @Override

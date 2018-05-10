@@ -42,7 +42,7 @@ kapt {
 
 greendao {
     targetGenDir 'src/main/java'
-    schemaVersion 3
+    schemaVersion 6
 }
 
 dependencies {

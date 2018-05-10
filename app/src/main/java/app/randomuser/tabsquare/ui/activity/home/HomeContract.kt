@@ -7,7 +7,7 @@ interface HomeContract {
     interface View {
         fun loadUserList()
         fun clearUserList()
-        fun setUserList(resultList: List<Result>)
+        fun setUserList(resultList: List<Result>, page: String)
         fun setAdapter()
         fun loadImageToImageView(mImagesUrl: String, imgView: ImageView)
         fun setupUI()
@@ -29,6 +29,6 @@ interface HomeContract {
         fun checkUserData(reqPage: String, count: String, state: String)
         fun getUsersList(reqPage: String, count: String, state: String)
         fun loadFromDB(reqPage: String, count: String, state: String)
-        fun saveUserDetailData(userHash: String, result: Result)
+        fun saveUserDetailData(userHash: String, result: Result, reqPage: String)
     }
 }

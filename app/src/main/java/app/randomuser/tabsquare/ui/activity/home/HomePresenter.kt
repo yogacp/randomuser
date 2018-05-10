@@ -53,7 +53,7 @@ class HomePresenter @Inject constructor(
                     mListResult = resultData.result
                 }
 
-                mView.setUserList(mListResult!!)
+                mView.setUserList(mListResult!!,reqPage)
                 if(state.equals(REFRESH_DATA)) {
                     mView.setAdapter()
                 }
@@ -85,8 +85,9 @@ class HomePresenter @Inject constructor(
                                 lastUpdated = System.currentTimeMillis()
                             }
                             mUserDataModel.delete(reqPage)
+                            mUserDetailDataModel.delete(reqPage)
                             mUserDataModel.saveUserData(userData)
-                            mView.setUserList(response.result)
+                            mView.setUserList(response.result, reqPage)
                             if(state.equals(REFRESH_DATA)) {
                                 mView.setAdapter()
                             }
@@ -114,12 +115,12 @@ class HomePresenter @Inject constructor(
 
     }
 
-    override fun saveUserDetailData(userHash: String, result: Result) {
-        mUserDetailDataModel.delete(userHash)
+    override fun saveUserDetailData(userHash: String, result: Result, reqPage: String) {
         val userDetailData = UserDetailData()
         userDetailData.apply {
             md5 = userHash
             data = mGson.toJson(result)
+            page = reqPage
             lastUpdated = System.currentTimeMillis()
         }
         mUserDetailDataModel.saveUserData(userDetailData)
